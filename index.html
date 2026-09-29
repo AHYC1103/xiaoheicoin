@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XiaoHeiCoin (XHB) — Polygon 生态代币</title>
+<meta name="description" content="XiaoHeiCoin (XHB) 是 XiaoHeiBit 生态的 Polygon 代币，社区驱动的去中心化项目，总量固定 100 万枚。">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #000;
+    --bg-card: #111;
+    --bg-card2: #1a1a1a;
+    --border: #2a2a2a;
+    --text: #fff;
+    --text2: #aaa;
+    --text3: #666;
+    --accent: #4ade80;
+    --accent2: #22c55e;
+    --radius: 16px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* 导航 */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+  .nav-inner {
+    max-width: 1080px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 16px; text-decoration: none; color: #fff;
+  }
+  .nav-logo .dot {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #1a1a1a; border: 2px solid #333;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+  }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-links a {
+    color: var(--text2); text-decoration: none; font-size: 14px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: #fff; }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 80px 24px 40px;
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(74,222,128,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-logo {
+    width: 100px; height: 100px; border-radius: 50%;
+    background: #111; border: 3px solid #2a2a2a;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 52px; font-weight: 800; color: #f5f5f5;
+    margin-bottom: 28px;
+    box-shadow: 0 0 60px rgba(74,222,128,0.1);
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 800; letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+  .hero .tag {
+    font-size: 18px; color: var(--text2); margin-bottom: 20px;
+  }
+  .hero .tag span { color: var(--accent); font-weight: 600; }
+  .hero p {
+    max-width: 560px; color: var(--text2);
+    font-size: 16px; line-height: 1.8; margin-bottom: 36px;
+  }
+  .hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px; border-radius: 12px;
+    text-decoration: none; font-size: 15px; font-weight: 600;
+    transition: all 0.2s; cursor: pointer; border: none;
+  }
+  .btn-primary {
+    background: var(--accent); color: #000;
+  }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+  .btn-secondary {
+    background: var(--bg-card2); color: #fff;
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: #444; background: #222; }
+
+  /* 通用 section */
+  section {
+    max-width: 1080px; margin: 0 auto;
+    padding: 60px 24px;
+  }
+  .section-title {
+    font-size: 28px; font-weight: 700; margin-bottom: 8px;
+  }
+  .section-sub {
+    color: var(--text2); font-size: 15px; margin-bottom: 32px;
+  }
+
+  /* 代币信息 */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: border-color 0.2s;
+  }
+  .stat-card:hover { border-color: #3a3a3a; }
+  .stat-label { font-size: 13px; color: var(--text3); margin-bottom: 6px; }
+  .stat-value { font-size: 22px; font-weight: 700; }
+  .stat-value.green { color: var(--accent); }
+
+  /* 合约地址 */
+  .contract-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+  }
+  .contract-info .label { font-size: 13px; color: var(--text3); margin-bottom: 4px; }
+  .contract-info .addr {
+    font-family: 'SF Mono', 'Menlo', monospace;
+    font-size: 14px; color: var(--accent);
+    word-break: break-all;
+  }
+  .copy-btn {
+    background: var(--bg-card2); border: 1px solid var(--border);
+    color: #fff; padding: 10px 20px; border-radius: 10px;
+    font-size: 13px; cursor: pointer; transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .copy-btn.copied { background: var(--accent); color: #000; border-color: var(--accent); }
+
+  /* 功能特点 */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .feature-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    transition: all 0.2s;
+  }
+  .feature-card:hover { border-color: #3a3a3a; transform: translateY(-2px); }
+  .feature-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: rgba(74,222,128,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 16px;
+  }
+  .feature-card h3 { font-size: 17px; margin-bottom: 8px; }
+  .feature-card p { font-size: 14px; color: var(--text2); line-height: 1.7; }
+
+  /* 路线图 */
+  .roadmap {
+    display: flex; flex-direction: column; gap: 0;
+    position: relative; padding-left: 28px;
+  }
+  .roadmap::before {
+    content: ''; position: absolute; left: 8px; top: 8px; bottom: 8px;
+    width: 2px; background: var(--border);
+  }
+  .roadmap-item {
+    position: relative; padding: 0 0 28px 20px;
+  }
+  .roadmap-item::before {
+    content: ''; position: absolute; left: -24px; top: 6px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--accent); border: 3px solid #000;
+  }
+  .roadmap-item.done::before { background: var(--accent); }
+  .roadmap-item.todo::before { background: #333; }
+  .roadmap-date { font-size: 12px; color: var(--text3); margin-bottom: 4px; }
+  .roadmap-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .roadmap-desc { font-size: 14px; color: var(--text2); }
+
+  /* 社区 */
+  .community-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .community-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    text-decoration: none; color: #fff;
+    transition: all 0.2s;
+  }
+  .community-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .community-card .icon { font-size: 24px; margin-bottom: 8px; }
+  .community-card .name { font-size: 14px; font-weight: 600; }
+  .community-card .handle { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+  /* 页脚 */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 24px;
+    text-align: center;
+    color: var(--text3); font-size: 13px;
+  }
+  footer a { color: var(--text2); text-decoration: none; }
+  footer a:hover { color: #fff; }
+
+  /* 响应式 */
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .hero { padding-top: 60px; }
+    section { padding: 40px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 导航 -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="dot">H</div>
+      XiaoHeiCoin
+    </a>
+    <div class="nav-links">
+      <a href="#token">代币</a>
+      <a href="#contract">合约</a>
+      <a href="#features">特点</a>
+      <a href="#roadmap">路线图</a>
+      <a href="#community">社区</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-logo">H</div>
+  <h1>XiaoHeiCoin</h1>
+  <div class="tag">$XHB · <span>Polygon</span> 生态</div>
+  <p>
+    XiaoHeiCoin (XHB) 是 XiaoHeiBit 生态的 Polygon 代币，社区驱动的去中心化项目，部署在 Polygon 网络上。总量固定 100 万枚，已在 QuickSwap 开通 XHB/POL 交易对。
+  </p>
+  <div class="hero-buttons">
+    <a href="https://quickswap.exchange/#/swap?inputCurrency=0xE8775a5a985aF6765a9BE01a22B4A459A83bADBc" target="_blank" class="btn btn-primary">在 QuickSwap 兑换</a>
+    <a href="https://polygonscan.com/token/0xE8775a5a985aF6765a9BE01a22B4A459A83bADBc" target="_blank" class="btn btn-secondary">查看合约</a>
+  </div>
+</div>
+
+<!-- 代币信息 -->
+<section id="token">
+  <h2 class="section-title">代币信息</h2>
+  <p class="section-sub">XHB 的核心参数</p>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">总量</div>
+      <div class="stat-value">1,000,000</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">网络</div>
+      <div class="stat-value green">Polygon</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">交易所</div>
+      <div class="stat-value">QuickSwap</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">精度</div>
+      <div class="stat-value">18</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">交易对</div>
+      <div class="stat-value">XHB/POL</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">类型</div>
+      <div class="stat-value">ERC20</div>
+    </div>
+  </div>
+</section>
+
+<!-- 合约地址 -->
+<section id="contract">
+  <h2 class="section-title">合约地址</h2>
+  <p class="section-sub">Polygon 链上的 XHB 合约，点击复制</p>
+  <div class="contract-box">
+    <div class="contract-info">
+      <div class="label">Polygon (ERC20)</div>
+      <div class="addr" id="contractAddr">0xE8775a5a985aF6765a9BE01a22B4A459A83bADBc</div>
+    </div>
+    <button class="copy-btn" onclick="copyContract()">复制地址</button>
+  </div>
+</section>
+
+<!-- 功能特点 -->
+<section id="features">
+  <h2 class="section-title">为什么选择 XHB</h2>
+  <p class="section-sub">社区驱动，透明公开</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>总量固定</h3>
+      <p>100 万枚硬顶，无增发机制，稀缺性由代码保证。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>低手续费</h3>
+      <p>基于 Polygon 网络，转账速度快，Gas 费用极低。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌊</div>
+      <h3>流动性锁定</h3>
+      <p>已在 QuickSwap 提供 XHB/POL 流动性，可自由兑换。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">👥</div>
+      <h3>社区驱动</h3>
+      <p>由社区共同推动发展，公开透明，无预挖无私募。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔗</div>
+      <h3>生态融合</h3>
+      <p>作为 XiaoHeiBit 生态的原生代币，赋能生态应用。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📱</div>
+      <h3>钱包支持</h3>
+      <p>支持所有兼容 ERC20 的钱包，资产管理便捷。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 路线图 -->
+<section id="roadmap">
+  <h2 class="section-title">发展路线</h2>
+  <p class="section-sub">XHB 的成长轨迹</p>
+  <div class="roadmap">
+    <div class="roadmap-item done">
+      <div class="roadmap-date">2026年9月</div>
+      <div class="roadmap-title">代币发行</div>
+      <div class="roadmap-desc">在 Polygon 网络部署 XHB 合约，总量 100 万枚。</div>
+    </div>
+    <div class="roadmap-item done">
+      <div class="roadmap-date">2026年9月</div>
+      <div class="roadmap-title">添加流动性</div>
+      <div class="roadmap-desc">在 QuickSwap 开通 XHB/POL 交易对，提供初始流动性。</div>
+    </div>
+    <div class="roadmap-item todo">
+      <div class="roadmap-date">进行中</div>
+      <div class="roadmap-title">平台收录</div>
+      <div class="roadmap-desc">申请 CoinGecko、CoinMarketCap 收录，提升曝光度。</div>
+    </div>
+    <div class="roadmap-item todo">
+      <div class="roadmap-date">规划中</div>
+      <div class="roadmap-title">生态应用</div>
+      <div class="roadmap-desc">对接 XiaoHeiBit 钱包和 DApp 生态，拓展使用场景。</div>
+    </div>
+    <div class="roadmap-item todo">
+      <div class="roadmap-date">规划中</div>
+      <div class="roadmap-title">社区建设</div>
+      <div class="roadmap-desc">扩大社区规模，推动社区自治与治理。</div>
+    </div>
+  </div>
+</section>
+
+<!-- 社区 -->
+<section id="community">
+  <h2 class="section-title">加入社区</h2>
+  <p class="section-sub">关注 XHB 最新动态</p>
+  <div class="community-grid">
+    <a href="https://x.com/HeYuCheng1103" target="_blank" class="community-card">
+      <div class="icon">𝕏</div>
+      <div class="name">X (Twitter)</div>
+      <div class="handle">@HeYuCheng1103</div>
+    </a>
+    <a href="https://t.me/XiaoHei1103" target="_blank" class="community-card">
+      <div class="icon">✈️</div>
+      <div class="name">Telegram</div>
+      <div class="handle">@XiaoHei1103</div>
+    </a>
+    <a href="https://github.com/AHYC1103" target="_blank" class="community-card">
+      <div class="icon">🐙</div>
+      <div class="name">GitHub</div>
+      <div class="handle">AHYC1103</div>
+    </a>
+    <a href="https://quickswap.exchange/#/swap?inputCurrency=0xE8775a5a985aF6765a9BE01a22B4A459A83bADBc" target="_blank" class="community-card">
+      <div class="icon">💱</div>
+      <div class="name">QuickSwap</div>
+      <div class="handle">立即兑换</div>
+    </a>
+  </div>
+</section>
+
+<!-- 页脚 -->
+<footer>
+  <p>© 2026 XiaoHeiCoin · 社区驱动 · 部署在 Polygon</p>
+  <p style="margin-top:8px;">
+    <a href="https://polygonscan.com/token/0xE8775a5a985aF6765a9BE01a22B4A459A83bADBc" target="_blank">PolygonScan</a>
+    ·
+    <a href="https://quickswap.exchange/#/swap?inputCurrency=0xE8775a5a985aF6765a9BE01a22B4A459A83bADBc" target="_blank">QuickSwap</a>
+  </p>
+  <p style="margin-top:12px; font-size:11px; color:#444;">加密货币投资有风险，本页面不构成投资建议。</p>
+</footer>
+
+<script>
+function copyContract() {
+  const addr = document.getElementById('contractAddr').textContent;
+  navigator.clipboard.writeText(addr).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '已复制 ✓';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '复制地址';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
