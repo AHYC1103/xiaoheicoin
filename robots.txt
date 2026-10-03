@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://heyucheng1103.ccwu.cc/xiaoheicoin/sitemap.xml
